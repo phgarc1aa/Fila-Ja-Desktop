@@ -1,116 +1,170 @@
-# Fila Já
+# Fila Já — Sistema Desktop
 
-**Sistema de gerenciamento de filas de atendimento em Unidades Básicas de Saúde (UBS).**
+**Sistema de gerenciamento de filas de atendimento em Unidades Básicas de Saúde (UBS), desenvolvido em Java Swing, utilizando Programação Orientada a Objetos, arquitetura MVC e integração com MySQL.**
 
 ## Sobre o projeto
 
-O **Fila Já** é um projeto acadêmico desenvolvido como parte da disciplina **Laboratório de Banco de Dados**, do curso de **Engenharia de Software**, durante o 4º semestre.
+O **Fila Já** é um projeto acadêmico desenvolvido como parte da disciplina **Programação Orientada a Objetos**, do curso de **Engenharia de Software**, durante o 4º semestre.
 
-A proposta do sistema é facilitar o gerenciamento de filas de atendimento em Unidades Básicas de Saúde (UBS), permitindo organizar pacientes, serviços e atendimentos de maneira estruturada.
+A proposta do sistema é facilitar o gerenciamento de filas de atendimento em Unidades Básicas de Saúde (UBS), permitindo organizar pacientes, unidades de saúde, serviços e atendimentos por meio de uma aplicação desktop.
 
-O projeto busca demonstrar, na prática, a aplicação dos conceitos de banco de dados relacionais e sua integração com uma aplicação web.
+O desenvolvimento teve como foco a aplicação prática dos conceitos de Programação Orientada a Objetos, organização em camadas, arquitetura MVC e integração com banco de dados MySQL.
 
 ## Objetivos e conhecimentos desenvolvidos
 
-Durante o desenvolvimento do Fila Já, foi possível aprofundar conhecimentos em SQL e administração de bancos de dados relacionais, trabalhando com:
+Durante o desenvolvimento do Fila Já, foram aplicados os seguintes conceitos e tecnologias:
 
-- **Modelagem de dados:** criação de tabelas, definição de entidades, relacionamentos e chaves primárias e estrangeiras.
-- **Consultas SQL:** utilização de comandos para inserção, atualização, exclusão e recuperação de informações.
-- **Índices:** implementação de índices para otimizar consultas e melhorar o desempenho do banco de dados.
-- **Triggers:** criação de gatilhos para automatizar operações e manter a consistência das informações.
-- **Views:** desenvolvimento de visões para facilitar a consulta e apresentação de dados.
-- **Stored Procedures:** criação de procedimentos armazenados para centralizar regras e operações do banco.
-- **Functions:** implementação de funções próprias para reutilização de operações e cálculos.
-- **Controle de transações:** utilização de conceitos de COMMIT e ROLLBACK para garantir a integridade das operações.
-- **Usuários e permissões:** configuração de diferentes níveis de acesso ao banco, aplicando conceitos de segurança e controle de privilégios.
-- **Integração com aplicação:** conexão entre o banco de dados MySQL e o backend desenvolvido em Java.
+- **Programação Orientada a Objetos (POO):** utilização de classes, objetos, encapsulamento, construtores e organização de responsabilidades.
+- **Arquitetura MVC:** separação da aplicação em Model, View e Controller, promovendo organização e manutenção do código.
+- **DAO (Data Access Object):** implementação de classes responsáveis pelo acesso e manipulação dos dados.
+- **Java Swing:** desenvolvimento de interfaces gráficas desktop, utilizando componentes como JFrame, JPanel, JTable, JTextField e JButton.
+- **JDBC:** integração entre a aplicação Java e o banco de dados MySQL.
+- **Operações CRUD:** implementação de operações de cadastro, consulta, atualização e exclusão de registros.
+- **Consultas SQL:** utilização de comandos SQL para manipulação e recuperação de informações.
+- **Relacionamentos e JOINs:** realização de consultas envolvendo diferentes tabelas do banco de dados.
+- **Segurança:** implementação de autenticação de usuários e armazenamento de senhas com hash utilizando PBKDF2.
+- **Tratamento de exceções:** utilização de mecanismos para tratar erros durante as operações da aplicação.
+- **Maven:** gerenciamento de dependências e configuração do projeto.
 
-O desenvolvimento permitiu compreender melhor como os recursos de um banco de dados podem ser utilizados não apenas para armazenar informações, mas também para automatizar processos, aplicar regras de negócio e garantir a integridade dos dados.
+O desenvolvimento permitiu consolidar conhecimentos sobre organização de aplicações Java, separação de responsabilidades, persistência de dados e construção de sistemas desktop integrados a bancos de dados relacionais.
 
 ## Funcionalidades
 
+- Autenticação de usuários.
 - Cadastro e gerenciamento de pacientes.
-- Cadastro e gerenciamento de UBS.
-- Organização de serviços oferecidos pelas unidades.
-- Cadastro de pacientes em filas de atendimento.
-- Geração e gerenciamento de senhas.
+- Cadastro e gerenciamento de Unidades Básicas de Saúde (UBS).
+- Cadastro e gerenciamento de serviços oferecidos pelas unidades.
+- Cadastro e gerenciamento de usuários.
+- Organização de pacientes em filas de atendimento.
+- Geração automática de senhas de atendimento.
 - Chamada do próximo paciente.
 - Registro e finalização de atendimentos.
 - Consulta ao histórico de movimentações da fila.
 - Visualização do tempo de espera e da quantidade de pacientes aguardando.
+- Geração de relatórios de atendimentos por período.
 
 ## Tecnologias utilizadas
 
-- **Java** — desenvolvimento do backend.
-- **Spring Boot** — estruturação da aplicação.
-- **Thymeleaf** — integração entre backend e páginas HTML.
-- **HTML5 e CSS3** — construção e estilização das interfaces.
-- **MySQL** — gerenciamento do banco de dados.
-- **SQL** — implementação das estruturas, consultas, funções, procedures, views e triggers.
-- **Maven** — gerenciamento de dependências e execução do projeto.
+- **Java 21** — linguagem de programação.
+- **Java Swing** — desenvolvimento da interface gráfica.
+- **MySQL 8** — gerenciamento do banco de dados.
+- **JDBC** — comunicação entre Java e MySQL.
+- **Maven** — gerenciamento de dependências e construção do projeto.
+- **IntelliJ IDEA** — ambiente de desenvolvimento.
 - **Git e GitHub** — versionamento e hospedagem do código-fonte.
 
-## Estrutura do projeto
+## Arquitetura do projeto
+
+A aplicação utiliza o padrão arquitetural MVC (Model-View-Controller), com a camada DAO responsável pela comunicação com o banco de dados.
+
+- **Model:** representa as entidades e os dados utilizados pela aplicação.
+- **View:** contém as interfaces gráficas desenvolvidas com Java Swing.
+- **Controller:** realiza a intermediação entre as interfaces e as operações do sistema.
+- **DAO:** centraliza as operações de acesso e persistência dos dados.
+
+Essa organização contribui para a separação de responsabilidades e facilita a manutenção e evolução do sistema.
+
+## Estrutura do repositório
 
 ```text
-fila-ja/
-├── src/
-│   └── main/
-│       ├── java/
-│       └── resources/
-│           ├── static/
-│           └── templates/
-├── .mvn/
-├── pom.xml
-├── mvnw
-├── mvnw.cmd
+Fila-Ja-Desktop/
+├── database/
+│   ├── backup/
+│   │   └── fila_ja_poo.sql
+│   └── scripts/
+│       ├── 01_criacao_tabelas.sql
+│       ├── 02_dados_iniciais.sql
+│       ├── 03_funcoes.sql
+│       ├── 04_indices.sql
+│       ├── 05_views.sql
+│       ├── 06_triggers.sql
+│       ├── 07_procedures.sql
+│       └── 08_usuarios_permissoes.sql
+│
+├── fila-ja-desktop/
+│   ├── src/
+│   │   └── main/
+│   │       └── java/
+│   │           └── br/com/filaja/
+│   │               ├── controller/
+│   │               ├── dao/
+│   │               ├── model/
+│   │               ├── view/
+│   │               └── Main.java
+│   ├── pom.xml
+│   └── README.md
+│
+├── .gitignore
 └── README.md
 ```
 
 ## Como executar o projeto
 
-**Pré-requisitos:**
-- Java JDK instalado.
-- MySQL instalado e configurado.
-- Maven (ou utilização do Maven Wrapper).
+### Pré-requisitos
 
-**Passos:**
+- Java JDK 21 ou superior compatível com a configuração do projeto.
+- MySQL 8 instalado e configurado.
+- Maven instalado.
+- IDE de preferência, como IntelliJ IDEA.
 
-1. Clone o repositório:
-
-```bash
-git clone https://github.com/phgarc1aa/fila-ja.git
-```
-
-2. Configure a conexão com o banco de dados MySQL no arquivo `application.properties`.
-
-3. Certifique-se de que o banco de dados e as estruturas necessárias estejam criados.
-
-4. Na pasta raiz do projeto, execute:
+### 1. Clonar o repositório
 
 ```bash
-./mvnw spring-boot:run
+git clone https://github.com/phgarc1aa/Fila-Ja-Desktop.git
 ```
 
-No Windows, utilize:
+### 2. Configurar o banco de dados
 
-```powershell
-.\mvnw.cmd spring-boot:run
-```
+O projeto disponibiliza os scripts SQL e um backup completo do banco de dados na pasta `database/`.
 
-5. Acesse a aplicação pelo navegador:
+Para preparar o ambiente:
+
+1. Abra o MySQL Workbench.
+2. Importe o arquivo `database/backup/fila_ja_poo.sql`.
+3. Verifique se o banco de dados `fila_ja_poo` foi criado corretamente.
+
+### 3. Configurar as credenciais
+
+A aplicação utiliza variáveis de ambiente para estabelecer a conexão com o MySQL.
+
+Configure as seguintes variáveis:
 
 ```text
-http://localhost:8080
+DB_USER=fila_poo
+DB_PASSWORD=sua_senha
 ```
+
+O usuário informado deve possuir as permissões necessárias para acessar o banco de dados.
+
+### 4. Executar a aplicação
+
+Entre na pasta do projeto desktop:
+
+```bash
+cd Fila-Ja-Desktop/fila-ja-desktop
+```
+
+Compile o projeto:
+
+```bash
+mvn compile
+```
+
+Execute a aplicação:
+
+```bash
+mvn exec:java "-Dexec.mainClass=br.com.filaja.Main"
+```
+
+Após a execução, a tela de autenticação será apresentada.
 
 ## Contexto acadêmico
 
 **Curso:** Engenharia de Software  
 **Semestre:** 4º semestre  
-**Disciplina:** Laboratório de Banco de Dados  
-**Projeto:** Fila Já
+**Disciplina:** Programação Orientada a Objetos  
+**Projeto:** Fila Já — Sistema Desktop
 
 ---
 
-Projeto desenvolvido com fins acadêmicos, aplicando na prática os conhecimentos adquiridos durante a disciplina de Laboratório de Banco de Dados.
+Projeto desenvolvido com fins acadêmicos, aplicando na prática os conceitos de Programação Orientada a Objetos, arquitetura MVC, desenvolvimento de interfaces gráficas com Java Swing e integração com banco de dados MySQL.
