@@ -1,0 +1,28 @@
+﻿# Java e Maven
+**/target/
+*.class
+
+# IntelliJ IDEA
+.idea/
+**/.idea/
+*.iml
+
+# VS Code
+.vscode/
+
+# Logs
+*.log
+
+# Credenciais
+**/application.properties
+
+# Arquivos do sistema
+.DS_Store
+Thumbs.db
+
+# Projeto web anterior
+/backend/
+
+# Backup do projeto web anterior
+/database/backup/fila_ja_completo.sql
+
