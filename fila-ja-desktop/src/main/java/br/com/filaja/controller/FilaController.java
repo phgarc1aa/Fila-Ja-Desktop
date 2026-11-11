@@ -36,6 +36,12 @@ public class FilaController {
         return dao.listarServicos();
     }
 
+    public List<Fila.ItemCombo> listarServicosPorUbs(int idUbs)
+            throws SQLException {
+
+        return dao.listarServicosPorUbs(idUbs);
+    }
+
     public List<Fila.ItemCombo> listarAtendentes() throws SQLException {
         return dao.listarAtendentes();
     }

@@ -53,8 +53,12 @@ public class MenuPrincipalView extends JFrame {
         adicionarBotao(painelBotoes, "Serviços",
                 () -> new ServicoView().setVisible(true));
 
-        adicionarBotao(painelBotoes, "Usuários",
-                () -> new UsuarioView().setVisible(true));
+        if (usuario.getNomeGrupo() != null
+                && usuario.getNomeGrupo().trim().equalsIgnoreCase("Administrador")) {
+
+            adicionarBotao(painelBotoes, "Usuários",
+                    () -> new UsuarioView().setVisible(true));
+        }
 
         adicionarBotao(painelBotoes, "Gerenciamento da Fila",
                 () -> new FilaView().setVisible(true));

@@ -200,14 +200,47 @@ public class FilaDAO {
     }
 
     // LISTAR SERVIÇOS
+    public List<Fila.ItemCombo> listarServicosPorUbs(int idUbs) throws SQLException {
+
+        String sql = """
+            SELECT s.id_servico, s.nome
+            FROM servicos s
+            INNER JOIN ubs_servico us
+                ON us.id_servico = s.id_servico
+            WHERE us.id_ubs = ?
+              AND s.ativo = 1
+            ORDER BY s.nome
+            """;
+
+        List<Fila.ItemCombo> lista = new ArrayList<>();
+
+        try (Connection conexao = ConnectionFactory.getConnection();
+             PreparedStatement ps = conexao.prepareStatement(sql)) {
+
+            ps.setInt(1, idUbs);
+
+            try (ResultSet rs = ps.executeQuery()) {
+
+                while (rs.next()) {
+                    lista.add(new Fila.ItemCombo(
+                            rs.getInt("id_servico"),
+                            rs.getString("nome")
+                    ));
+                }
+            }
+        }
+
+        return lista;
+    }
+
     public List<Fila.ItemCombo> listarServicos() throws SQLException {
 
         String sql = """
-                SELECT id_servico, nome
-                FROM servicos
-                WHERE ativo = 1
-                ORDER BY nome
-                """;
+            SELECT id_servico, nome
+            FROM servicos
+            WHERE ativo = 1
+            ORDER BY nome
+            """;
 
         return listarOpcoes(sql);
     }

@@ -8,6 +8,9 @@ import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.sql.SQLException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.ResolverStyle;
 import java.util.List;
 
 public class PacienteView extends JFrame {
@@ -74,7 +77,7 @@ public class PacienteView extends JFrame {
         painelFormulario.add(new JLabel("CPF:"));
         painelFormulario.add(campoCpf);
 
-        painelFormulario.add(new JLabel("Nascimento (AAAA-MM-DD):"));
+        painelFormulario.add(new JLabel("Nascimento (DD/MM/AAAA):"));
         painelFormulario.add(campoNascimento);
 
         painelFormulario.add(new JLabel("Telefone:"));
@@ -204,8 +207,10 @@ public class PacienteView extends JFrame {
                 modeloTabela.getValueAt(linha, 2).toString()
         );
 
+        LocalDate dataNascimento = (LocalDate) modeloTabela.getValueAt(linha, 3);
+
         campoNascimento.setText(
-                modeloTabela.getValueAt(linha, 3).toString()
+                dataNascimento.format(DateTimeFormatter.ofPattern("dd/MM/yyyy"))
         );
 
         Object telefone = modeloTabela.getValueAt(linha, 4);
@@ -307,9 +312,9 @@ public class PacienteView extends JFrame {
 
         String nome = campoNome.getText().trim();
         String cpf = campoCpf.getText().trim();
+        String nascimento = campoNascimento.getText().trim();
 
-        if (nome.isEmpty() || cpf.isEmpty()
-                || campoNascimento.getText().trim().isEmpty()) {
+        if (nome.isEmpty() || cpf.isEmpty() || nascimento.isEmpty()) {
 
             JOptionPane.showMessageDialog(
                     this,
@@ -319,15 +324,43 @@ public class PacienteView extends JFrame {
             return null;
         }
 
+        LocalDate dataNascimento;
+
+        try {
+
+            DateTimeFormatter formatoData = DateTimeFormatter
+                    .ofPattern("dd/MM/uuuu")
+                    .withResolverStyle(ResolverStyle.STRICT);
+
+            dataNascimento = LocalDate.parse(nascimento, formatoData);
+
+        } catch (DateTimeParseException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Data de nascimento inválida!\n"
+                            + "Utilize o formato DD/MM/AAAA.\n"
+                            + "Exemplo: 07/01/2005."
+            );
+
+            return null;
+        }
+
+        if (!dataNascimento.isBefore(LocalDate.now())) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "A data de nascimento deve ser anterior à data atual."
+            );
+
+            return null;
+        }
+
         Paciente paciente = new Paciente();
 
         paciente.setNome(nome);
         paciente.setCpf(cpf);
-
-        paciente.setDataNascimento(
-                LocalDate.parse(campoNascimento.getText().trim())
-        );
-
+        paciente.setDataNascimento(dataNascimento);
         paciente.setTelefone(campoTelefone.getText().trim());
         paciente.setEmail(campoEmail.getText().trim());
 

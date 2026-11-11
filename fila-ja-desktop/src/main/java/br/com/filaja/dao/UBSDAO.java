@@ -8,13 +8,20 @@ import java.util.List;
 
 public class UBSDAO {
 
-    // Cadastrar UBS
+    // Cadastrar UBS e associar aos serviços ativos
     public void cadastrar(UBS ubs) throws SQLException {
 
         String sql = """
                 INSERT INTO ubs
                 (id_ubs, nome, endereco, telefone, ativo)
                 VALUES (?, ?, ?, ?, ?)
+                """;
+
+        String sqlServicos = """
+                INSERT INTO ubs_servico (id_ubs, id_servico)
+                SELECT ?, id_servico
+                FROM servicos
+                WHERE ativo = TRUE
                 """;
 
         try (Connection conexao = ConnectionFactory.getConnection()) {
@@ -50,6 +57,14 @@ public class UBSDAO {
                     stmt.setBoolean(5, ubs.isAtivo());
 
                     stmt.executeUpdate();
+                }
+
+                // Associar todos os serviços ativos à nova UBS
+                try (PreparedStatement stmtServicos =
+                             conexao.prepareStatement(sqlServicos)) {
+
+                    stmtServicos.setInt(1, ubs.getIdUbs());
+                    stmtServicos.executeUpdate();
                 }
 
                 conexao.commit();
@@ -125,17 +140,41 @@ public class UBSDAO {
         }
     }
 
-    // Excluir UBS
+    // Excluir UBS e seus vínculos com serviços
     public void excluir(int id) throws SQLException {
 
-        String sql = "DELETE FROM ubs WHERE id_ubs = ?";
+        String sqlVinculos = "DELETE FROM ubs_servico WHERE id_ubs = ?";
+        String sqlUBS = "DELETE FROM ubs WHERE id_ubs = ?";
 
-        try (Connection conexao = ConnectionFactory.getConnection();
-             PreparedStatement stmt = conexao.prepareStatement(sql)) {
+        try (Connection conexao = ConnectionFactory.getConnection()) {
 
-            stmt.setInt(1, id);
+            conexao.setAutoCommit(false);
 
-            stmt.executeUpdate();
+            try {
+
+                // Excluir vínculos com serviços
+                try (PreparedStatement stmt =
+                             conexao.prepareStatement(sqlVinculos)) {
+
+                    stmt.setInt(1, id);
+                    stmt.executeUpdate();
+                }
+
+                // Excluir UBS
+                try (PreparedStatement stmt =
+                             conexao.prepareStatement(sqlUBS)) {
+
+                    stmt.setInt(1, id);
+                    stmt.executeUpdate();
+                }
+
+                conexao.commit();
+
+            } catch (SQLException e) {
+
+                conexao.rollback();
+                throw e;
+            }
         }
     }
 

@@ -41,6 +41,10 @@ public class FilaView extends JFrame {
 
         inicializarComponentes();
         carregarCombos();
+
+        cbUbs.addActionListener(e -> carregarServicosDaUbs());
+        carregarServicosDaUbs();
+
         listarFila();
     }
 
@@ -208,7 +212,6 @@ public class FilaView extends JFrame {
 
             preencherCombo(cbPaciente, controller.listarPacientes());
             preencherCombo(cbUbs, controller.listarUbs());
-            preencherCombo(cbServico, controller.listarServicos());
             preencherCombo(cbAtendente, controller.listarAtendentes());
             preencherCombo(cbProfissional, controller.listarProfissionais());
 
@@ -221,6 +224,42 @@ public class FilaView extends JFrame {
         }
     }
 
+    // CARREGAR SERVIÇOS DA UBS SELECIONADA
+    private void carregarServicosDaUbs() {
+
+        Fila.ItemCombo ubs =
+                (Fila.ItemCombo) cbUbs.getSelectedItem();
+
+        cbServico.removeAllItems();
+
+        if (ubs == null) {
+            return;
+        }
+
+        try {
+
+            List<Fila.ItemCombo> servicos =
+                    controller.listarServicosPorUbs(ubs.getId());
+
+            preencherCombo(cbServico, servicos);
+
+            if (servicos.isEmpty()) {
+                JOptionPane.showMessageDialog(
+                        this,
+                        "Não existem serviços ativos associados a esta UBS."
+                );
+            }
+
+        } catch (SQLException e) {
+
+            JOptionPane.showMessageDialog(
+                    this,
+                    "Erro ao carregar serviços da UBS: " + e.getMessage()
+            );
+        }
+    }
+
+    // PREENCHER COMBO
     private void preencherCombo(
             JComboBox<Fila.ItemCombo> combo,
             List<Fila.ItemCombo> itens) {
@@ -266,6 +305,9 @@ public class FilaView extends JFrame {
             fila.setIdUbs(ubs.getId());
             fila.setIdServico(servico.getId());
             fila.setIdUsuario(atendente.getId());
+
+            System.out.println("UBS selecionada: " + ubs.getId());
+            System.out.println("Serviço selecionado: " + servico.getId());
 
             controller.cadastrar(fila);
 
@@ -326,10 +368,12 @@ public class FilaView extends JFrame {
                 (Fila.ItemCombo) cbServico.getSelectedItem();
 
         if (ubs == null || servico == null) {
+
             JOptionPane.showMessageDialog(
                     this,
                     "Selecione uma UBS e um serviço."
             );
+
             return;
         }
 
